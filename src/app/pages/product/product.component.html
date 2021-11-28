@@ -1,0 +1,10 @@
+<app-product-type (products)="fetchProduct($event)"></app-product-type>
+
+<div class="row">
+    <div class="col-md-4" *ngFor="let food of dataSource">
+        <div class="card cursor-pointer" (click)="showDetails(food)" id="kt_explore_toggle">
+            <img [src]="food.url" [alt]="food.name">
+            <span>{{food.name}}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,126 @@
+<!-- Drawer -->
+<div id="kt_explore" class="bg-white" data-kt-drawer="true" data-kt-drawer-name="explore" data-kt-drawer-activate="true" data-kt-drawer-overlay="true" data-kt-drawer-width="{default:'300px', 'lg': '375px'}" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_explore_toggle"
+    data-kt-drawer-close="#kt_explore_close">
+    <!-- begin::Card -->
+    <div class="card shadow-none w-100">
+        <!-- begin::Header -->
+        <div class="card-header" id="kt_explore_header">
+            <h5 class="card-title fw-bold text-gray-600">
+                Product Form
+            </h5>
+
+
+
+            <div class="card-toolbar">
+                <button type="button" class="ms-3 btn btn-sm btn-danger cursor-pointer" id="kt_explore_toggle3" (click)="delete()" *ngIf="isProductViewed">
+          Delete
+        </button>
+                <button type="button" class="btn btn-sm btn-icon explore-btn-dismiss me-n5" id="kt_explore_close">
+          <span [inlineSVG]="'./assets/media/icons/duotune/arrows/arr061.svg'" class="svg-icon svg-icon-2"></span>
+        </button>
+            </div>
+        </div>
+        <form [formGroup]="productForm" novalidate="novalidate">
+            <!-- end::Header  -->
+            <!-- begin::Body  -->
+            <div class="card-body" id="kt_explore_body">
+                <!-- begin::Content  -->
+                <div id="kt_explore_scroll" class="scroll-y me-n5 pe-5" data-kt-scroll="true" data-kt-scroll-height="auto" data-kt-scroll-wrappers="#kt_explore_body" data-kt-scroll-dependencies="#kt_explore_header, #kt_explore_footer" data-kt-scroll-offset="5px">
+                    <div class="mb-0">
+                        <div class="mb-4">
+                            <div class="img-product cursor-pointer" (click)="productFiles.click()">
+                                <ng-container *ngIf="product.url!=''; else elseTemplate">
+                                    <img [src]="product.url">
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    Choose Image
+                                </ng-template>
+                            </div>
+                            <input type="file" multiple hidden #productFiles accept=".jpg, .jpeg, .png" (input)="storeImages($event.target)" [disabled]="isProductViewed">
+                        </div>
+                        <div class="mb-4">
+                            <label>Name</label>
+                            <input type="text" class="form-control mt-1" [value]="product.name" formControlName="name">
+                            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                              validation: 'required',
+                              message: 'Name is required',
+                              control: productForm.controls['name']
+                            }"></ng-container>
+                        </div>
+                        <div class="mb-4">
+                            <label for="type">Type</label>
+                            <select name="type" id="type" class="form-control mt-1" formControlName="type_id" [value]="product.type_id">
+                <option hidden selected>Please Select Type...</option>
+                <option *ngFor="let type of types" [value]="type.id">{{type.name}}</option>
+              </select>
+                            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                validation: 'required',
+                message: 'Type is required',
+                control: productForm.controls['type_id']
+              }"></ng-container>
+                        </div>
+                        <div class="mb-4">
+                            <label>Description</label>
+                            <textarea type="text" class="form-control mt-1" rows="7" formControlName="description" [value]="product.description"></textarea>
+                            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                              validation: 'required',
+                              message: 'description is required',
+                              control: productForm.controls['description']
+                            }"></ng-container>
+                        </div>
+                        <div class="mb-4">
+                            <label>Price</label>
+                            <input type="number" class="form-control mt-1" formControlName="price" [value]="product.price">
+                            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                              validation: 'required',
+                              message: 'Price is required',
+                              control: productForm.controls['price']
+                            }"></ng-container>
+                            <ng-container [ngTemplateOutlet]="formError" [ngTemplateOutletContext]="{
+                              validation: 'min',
+                              message: 'Price must be at least 1',
+                              control: productForm.controls['price']
+                            }"></ng-container>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- end::Content  -->
+            </div>
+            <!-- end::Body  -->
+            <!-- begin::Footer  -->
+            <div class="card-footer py-5 text-center" id="kt_explore_footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <button class="btn qr-btn-secondary w-100" type="button" id="kt_explore_close">{{isProductViewed ? "Close" :
+              "Cancel"}}</button>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn qr-btn-primary w-100" type="submit" [disabled]="this.productForm.invalid" (click)="submit()">{{isProductViewed ? "Edit" : "Save"}}
+
+              <ng-container *ngIf="loading">
+                <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+              </ng-container>
+
+
+            </button>
+                    </div>
+                </div>
+            </div>
+            <!-- end::Footer -->
+
+            <ng-template #formError let-control="control" let-message="message" let-validation="validation">
+                <ng-container *ngIf="control.hasError(validation) && (control.dirty || control.touched)">
+                    <div class="fv-plugins-message-container">
+                        <div class="fv-help-block">
+                            <span role="alert">
+                {{ message }}
+              </span>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-template>
+        </form>
+    </div>
+    <!-- begin::Card  -->
+</div>
